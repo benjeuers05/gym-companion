@@ -6,11 +6,16 @@ import { EXERCISES, SEED_SESSION, DEFAULT_LINKS } from './data.js';
 const STORAGE_KEY = 'gymCompanion:v1';
 
 function defaultState() {
-  return { history: {}, checklist: {}, notes: {}, links: {}, seeded: false };
+  return { history: {}, checklist: {}, notes: {}, links: {}, cardio: {}, seeded: false };
 }
 
 export function todayISO() {
-  return new Date().toISOString().slice(0, 10);
+  // Local calendar date, not UTC — toISOString() would file a late-night
+  // session under the wrong day whenever local time and UTC disagree.
+  const d = new Date();
+  const month = String(d.getMonth() + 1).padStart(2, '0');
+  const day = String(d.getDate()).padStart(2, '0');
+  return `${d.getFullYear()}-${month}-${day}`;
 }
 
 export function load() {
@@ -25,6 +30,7 @@ export function load() {
   state.checklist = state.checklist || {};
   state.notes = state.notes || {};
   state.links = state.links || {};
+  state.cardio = state.cardio || {};
   seedIfNeeded(state);
   return state;
 }
@@ -98,6 +104,16 @@ export function getChecklistState(state, sessionId, kind, length) {
     state.checklist[key] = Array.from({ length }, () => false);
   }
   return { key, values: state.checklist[key] };
+}
+
+// ---------- Cardio (warm-up / cool-down), per day + session ----------
+
+export function getCardioEntry(state, sessionId, kind) {
+  const key = `${todayISO()}:${sessionId}:${kind}`;
+  if (!state.cardio[key]) {
+    state.cardio[key] = { machine: '', durationMin: null, speedKmh: null, incline: null, resistance: null, notes: '' };
+  }
+  return { key, entry: state.cardio[key] };
 }
 
 // ---------- Session notes ("how did it feel") ----------

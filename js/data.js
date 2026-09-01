@@ -2,15 +2,21 @@
 // shared exercises (the two protective drills) accumulate one history
 // across every session variant, instead of tracking separately per session.
 
+// Cardio is logged as structured data (see cardioEntry in storage.js), not
+// a checklist line — machine/duration/speed/incline/resistance, so actual
+// cardio habits are visible over time rather than just a checked box.
+export const CARDIO_MACHINES = ['Treadmill', 'Bike', 'Rower', 'Elliptical', 'Other'];
+
+export const WARMUP_CARDIO_HINT = 'Suggested: 5 min, easy conversational pace';
+export const COOLDOWN_CARDIO_HINT = 'Suggested: 5-10 min, easy pace, let your heart rate settle';
+
 export const WARMUP = [
-  { label: 'Bike or rower, easy pace', cue: '5 minutes, easy conversational pace — just enough to get blood flowing' },
   { label: 'Band pull-aparts', cue: '2 × 15 — light band at chest height, pull apart squeezing your shoulder blades together' },
   { label: 'Scapular wall slides', cue: '2 × 10 — back against a wall, arms in a goalpost position, slide overhead keeping contact with the wall' },
   { label: 'Bodyweight squats + hip openers', cue: '2 × 10 — a few bodyweight squats, then a few standing hip circles/openers each side' }
 ];
 
 export const COOLDOWN = [
-  { label: 'Easy bike or incline walk', cue: '5-10 minutes, easy pace, let your heart rate settle' },
   { label: 'Stretch quads', cue: 'Standing, pull one heel toward your glutes, knees together, hold 20-30s each side' },
   { label: 'Stretch hip flexors', cue: 'Kneeling lunge position, back knee down, gently push hips forward until you feel a stretch at the front of the back hip, hold 20-30s each side' },
   { label: 'Stretch pecs', cue: 'Forearm on a wall or door frame at shoulder height, gently rotate your body away until you feel a stretch across the chest, hold 20-30s each side' }

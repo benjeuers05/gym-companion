@@ -1,4 +1,4 @@
-import { SESSIONS, EXERCISES, WARMUP, COOLDOWN } from './data.js';
+import { SESSIONS, EXERCISES, WARMUP, COOLDOWN, CARDIO_MACHINES, WARMUP_CARDIO_HINT, COOLDOWN_CARDIO_HINT } from './data.js';
 import * as Storage from './storage.js';
 import { createHoldTimer } from './timer.js';
 import { patternIcon, CHECK_SVG, PLAY_SVG } from './icons.js';
@@ -38,6 +38,7 @@ export function renderRunner(app, sessionId) {
 
     <section class="block">
       <div class="block-title">Warm-up</div>
+      <div id="warmupCardio"></div>
       <div class="checklist" id="warmupList"></div>
     </section>
 
@@ -48,6 +49,7 @@ export function renderRunner(app, sessionId) {
 
     <section class="block">
       <div class="block-title">Cool-down</div>
+      <div id="cooldownCardio"></div>
       <div class="checklist" id="cooldownList"></div>
     </section>
 
@@ -67,6 +69,9 @@ export function renderRunner(app, sessionId) {
 
   document.getElementById('dateLabel').textContent =
     new Date().toLocaleDateString('en-AU', { weekday: 'long', day: 'numeric', month: 'long' });
+
+  renderCardioCard(state, sessionId, 'warmup', WARMUP_CARDIO_HINT, document.getElementById('warmupCardio'));
+  renderCardioCard(state, sessionId, 'cooldown', COOLDOWN_CARDIO_HINT, document.getElementById('cooldownCardio'));
 
   renderChecklist(state, sessionId, 'warmup', WARMUP, document.getElementById('warmupList'));
   renderChecklist(state, sessionId, 'cooldown', COOLDOWN, document.getElementById('cooldownList'));
@@ -91,6 +96,45 @@ export function renderRunner(app, sessionId) {
   exercises.forEach((ex) => attachExerciseHandlers(state, sessionId, ex, updateProgress));
   updateProgress();
   attachNotesHandlers(state, sessionId);
+}
+
+function renderCardioCard(state, sessionId, kind, hint, container) {
+  const { key, entry } = Storage.getCardioEntry(state, sessionId, kind);
+  const prefix = `cardio-${kind}`;
+
+  container.innerHTML = `
+    <div class="cardio-card">
+      <div class="cardio-hint">${hint}</div>
+      <select id="${prefix}-machine">
+        <option value="">Machine…</option>
+        ${CARDIO_MACHINES.map((m) => `<option value="${m}" ${entry.machine === m ? 'selected' : ''}>${m}</option>`).join('')}
+      </select>
+      <div class="cardio-grid">
+        <label>Duration<input type="number" inputmode="decimal" placeholder="min" id="${prefix}-duration" value="${entry.durationMin ?? ''}"></label>
+        <label>Speed<input type="number" inputmode="decimal" step="0.1" placeholder="km/h" id="${prefix}-speed" value="${entry.speedKmh ?? ''}"></label>
+        <label>Incline<input type="number" inputmode="decimal" step="0.5" placeholder="%" id="${prefix}-incline" value="${entry.incline ?? ''}"></label>
+        <label>Resistance<input type="number" inputmode="decimal" placeholder="level" id="${prefix}-resistance" value="${entry.resistance ?? ''}"></label>
+      </div>
+      <input type="text" class="cardio-notes" placeholder="Notes — e.g. started resistance 9, dropped to 7" id="${prefix}-notes" value="${entry.notes || ''}">
+    </div>
+  `;
+
+  const fields = [
+    ['machine', 'machine', (v) => v],
+    ['duration', 'durationMin', (v) => (v ? parseFloat(v) : null)],
+    ['speed', 'speedKmh', (v) => (v ? parseFloat(v) : null)],
+    ['incline', 'incline', (v) => (v ? parseFloat(v) : null)],
+    ['resistance', 'resistance', (v) => (v ? parseFloat(v) : null)],
+    ['notes', 'notes', (v) => v]
+  ];
+  fields.forEach(([idSuffix, prop, parse]) => {
+    const el = document.getElementById(`${prefix}-${idSuffix}`);
+    el.addEventListener('change', () => {
+      entry[prop] = parse(el.value);
+      state.cardio[key] = entry;
+      persist(state);
+    });
+  });
 }
 
 function renderChecklist(state, sessionId, kind, items, container) {

@@ -101,6 +101,50 @@ section.block{
   margin-bottom:10px;
 }
 
+/* ---------- Cardio (warm-up / cool-down) ---------- */
+.cardio-card{
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 12px 14px;
+  margin-bottom: 8px;
+}
+.cardio-hint{
+  font-size:12px;
+  color: var(--text-dim);
+  margin-bottom:8px;
+}
+.cardio-card select{
+  width:100%;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  color: var(--text);
+  border-radius:8px;
+  padding: 7px 8px;
+  font-size:14px;
+  font-family: inherit;
+  margin-bottom:8px;
+}
+.cardio-grid{
+  display:grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap:8px;
+  margin-bottom:8px;
+}
+.cardio-grid label{
+  font-size:11.5px;
+  color: var(--text-dim);
+  display:flex;
+  flex-direction:column;
+  gap:4px;
+}
+.cardio-grid input{
+  font-size:14px !important;
+}
+.cardio-notes{
+  font-size:13px !important;
+}
+
 /* ---------- Checklist (warm-up / cool-down / history list) ---------- */
 .checklist{
   background: var(--surface);
