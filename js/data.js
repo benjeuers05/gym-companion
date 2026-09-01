@@ -188,6 +188,31 @@ export const EXERCISES = {
   }
 };
 
+// Suggested form-demo videos, seeded as defaults — edit the link field on
+// any exercise card to override. Primarily ScottHermanFitness for standard
+// gym-equipment lifts (consistent "How To" style); the two rehab-specific
+// drills are sourced from PT-run channels instead (E3 Rehab, and Champion
+// PT & Performance for the Spanish squat specifically).
+export const DEFAULT_LINKS = {
+  'goblet-squat': 'https://www.youtube.com/watch?v=MeIiIdhvXT4',
+  'lat-pulldown': 'https://www.youtube.com/watch?v=CAwf7n6Luuc',
+  'chest-press': 'https://www.youtube.com/watch?v=xUm0BiZCWlQ',
+  'rdl': 'https://www.youtube.com/watch?v=FQKfr1YDhEk',
+  'spanish-squat': 'https://www.youtube.com/watch?v=qrBEigyHW4k',
+  'band-rotation': 'https://www.youtube.com/watch?v=X46R4sDzm5E',
+  'plank': 'https://www.youtube.com/watch?v=A2b2EmIg0dA',
+  'leg-press': 'https://www.youtube.com/watch?v=oujca3_Shgw',
+  'seated-row': 'https://www.youtube.com/watch?v=7o2oolbmzeI',
+  'incline-press': 'https://www.youtube.com/watch?v=ig0NyNlSce4',
+  'hip-thrust': 'https://www.youtube.com/watch?v=SEdqd1n0cvg',
+  'dead-bug': 'https://www.youtube.com/watch?v=bxn9FBrt4-A',
+  'split-squat': 'https://www.youtube.com/watch?v=hPC8-z6QXco',
+  'single-arm-row': 'https://www.youtube.com/watch?v=KRN38chlkds',
+  'landmine-press': 'https://www.youtube.com/watch?v=7i64SnEJv6A',
+  'single-leg-rdl': 'https://www.youtube.com/watch?v=MsE_T9nAsSE',
+  'side-plank': 'https://www.youtube.com/watch?v=9kuthTttTUs'
+};
+
 export const SESSIONS = {
   a: {
     id: 'a', label: 'Session A', subtitle: 'Squat · Pull · Push · Hinge',

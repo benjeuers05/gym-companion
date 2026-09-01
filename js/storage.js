@@ -1,7 +1,7 @@
 // All persistence lives in a single localStorage key, real browser
 // storage only — no backend, no accounts, entirely client-side.
 
-import { EXERCISES, SEED_SESSION } from './data.js';
+import { EXERCISES, SEED_SESSION, DEFAULT_LINKS } from './data.js';
 
 const STORAGE_KEY = 'gymCompanion:v1';
 
@@ -113,7 +113,10 @@ export function getTodayNotes(state, sessionId) {
 // ---------- YouTube links ----------
 
 export function getLink(state, exerciseId) {
-  return state.links[exerciseId] || '';
+  if (Object.prototype.hasOwnProperty.call(state.links, exerciseId)) {
+    return state.links[exerciseId];
+  }
+  return DEFAULT_LINKS[exerciseId] || '';
 }
 
 export function setLink(state, exerciseId, url) {
