@@ -64,6 +64,10 @@ export function renderRunner(app, sessionId) {
       </div>
     </section>
 
+    <section class="finish-block">
+      <button class="finish-btn" id="finishSessionBtn">Finish session</button>
+    </section>
+
     <div class="save-status" id="saveStatus">&nbsp;</div>
   `;
 
@@ -96,6 +100,24 @@ export function renderRunner(app, sessionId) {
   exercises.forEach((ex) => attachExerciseHandlers(state, sessionId, ex, updateProgress));
   updateProgress();
   attachNotesHandlers(state, sessionId);
+
+  document.getElementById('finishSessionBtn').addEventListener('click', () => {
+    let total = 0;
+    let done = 0;
+    exercises.forEach((ex) => {
+      for (let i = 0; i < ex.sets; i++) {
+        total++;
+        const el = document.getElementById(`${ex.id}-check-${i}`);
+        if (el && el.classList.contains('checked')) done++;
+      }
+    });
+    if (done < total) {
+      const remaining = total - done;
+      const proceed = confirm(`${remaining} set${remaining === 1 ? '' : 's'} not logged yet — finish anyway?`);
+      if (!proceed) return;
+    }
+    location.hash = '#/picker';
+  });
 }
 
 function renderCardioCard(state, sessionId, kind, hint, container) {
@@ -163,7 +185,7 @@ function renderChecklist(state, sessionId, kind, items, container) {
 }
 
 function formatLastTime(ex, entry) {
-  const dateStr = new Date(entry.date).toLocaleDateString('en-AU', { day: 'numeric', month: 'short' });
+  const dateStr = Storage.parseLocalDate(entry.date).toLocaleDateString('en-AU', { day: 'numeric', month: 'short' });
   const sessionLabel = SESSIONS[entry.sessionId] ? SESSIONS[entry.sessionId].label : '';
   const parts = entry.sets.map((s) => {
     if (ex.type === 'weight') return `${s.value ?? 0}kg`;

@@ -18,6 +18,13 @@ export function todayISO() {
   return `${d.getFullYear()}-${month}-${day}`;
 }
 
+// Parses a "YYYY-MM-DD" storage date as a local-midnight Date, not UTC —
+// new Date("YYYY-MM-DD") parses as UTC and can display as the wrong day
+// depending on the viewer's timezone offset.
+export function parseLocalDate(dateStr) {
+  return new Date(`${dateStr}T00:00:00`);
+}
+
 export function load() {
   let state;
   try {
@@ -82,6 +89,22 @@ export function ensureTodayEntry(state, exerciseId, sessionId, numSets) {
     state.history[exerciseId].push(entry);
   }
   return entry;
+}
+
+export function upsertEntry(state, exerciseId, date, sessionId, sets) {
+  state.history[exerciseId] = state.history[exerciseId] || [];
+  const existing = state.history[exerciseId].find((e) => e.date === date && e.sessionId === sessionId);
+  if (existing) {
+    existing.sets = sets;
+  } else {
+    state.history[exerciseId].push({ date, sessionId, sets });
+  }
+}
+
+export function deleteEntry(state, exerciseId, date, sessionId) {
+  state.history[exerciseId] = (state.history[exerciseId] || []).filter(
+    (e) => !(e.date === date && e.sessionId === sessionId)
+  );
 }
 
 export function getLastSessionDate(state, sessionId) {

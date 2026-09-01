@@ -17,7 +17,7 @@ export function renderPicker(app) {
 function sessionCard(state, session) {
   const lastDate = Storage.getLastSessionDate(state, session.id);
   const lastLabel = lastDate
-    ? `Last done ${new Date(lastDate).toLocaleDateString('en-AU', { day: 'numeric', month: 'short' })}`
+    ? `Last done ${Storage.parseLocalDate(lastDate).toLocaleDateString('en-AU', { day: 'numeric', month: 'short' })}`
     : 'Not done yet';
 
   return `
