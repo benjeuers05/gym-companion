@@ -128,7 +128,7 @@ export const EXERCISES = {
   },
   'dead-bug': {
     id: 'dead-bug', name: 'Dead bug', pattern: 'core', type: 'reps',
-    target: '2 sets × 8-10 reps per side', sets: 2, repsPerSet: 10, equipment: 'bodyweight',
+    target: '2 sets × 8-10 reps per side', sets: 2, repsPerSet: '8-10', equipment: 'bodyweight, each side',
     cues: [
       'Lie on your back, arms up, knees bent at 90°',
       'Press your lower back gently into the floor and keep it there',
